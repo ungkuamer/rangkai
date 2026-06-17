@@ -1,6 +1,0 @@
-Judging /home/ungku/programming/rangkai
-Judge error: /home/ungku/programming/rangkai
-Scope guard returned invalid structured output: 1 validation error for ScopeGuardVerdictModel
-rationale
-  String should have at most 500 characters [type=string_too_long, input_value='The diff shows zero chan...toward the stated goal.', input_type=str]
-    For further information visit https://errors.pydantic.dev/2.13/v/string_too_long

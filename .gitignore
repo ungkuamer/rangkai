@@ -1,6 +1,8 @@
 __pycache__/
 *.py[cod]
 .pytest_cache/
+.mypy_cache/
+.ruff_cache/
 worktrees/
 rangkai.yaml
 
@@ -8,6 +10,9 @@ rangkai.yaml
 graphify-out/
 
 # environment / build / dependencies
+.venv/
+venv/
+env/
 .commandcode/
 node_modules/
 *.egg-info/
@@ -20,3 +25,20 @@ docs/*
 !docs/*/
 docs/*.pdf
 
+# quality gate inputs
+quality-gate-inputs/
+
+# IDE / editors
+.vscode/
+.idea/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# scratch files
+scratch/
+*.scratch.md
+
+# local configuration drafts
+docs/quality-gate/judge-harness-config.toml

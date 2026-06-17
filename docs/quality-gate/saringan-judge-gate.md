@@ -68,7 +68,55 @@ scripts/saringan-quality-gate.sh \
   <implementation_branch>
 ```
 
-## Required environment
+## Judge Harness Configuration (recommended)
+
+Saringan supports a dedicated **Judge Harness Configuration** file that declares
+named harnesses with provider, model, command, and timeout per-harness.
+This replaces the single `SARINGAN_JUDGE_MODEL` env var with a richer setup.
+
+Rangkai's pre-built config lives at:
+
+```text
+docs/quality-gate/judge-harness-config.toml
+```
+
+It defines three harnesses:
+
+| Harness | Provider | Model | Notes |
+|---------|----------|-------|-------|
+| `legacy-litellm` | openai | openai/kimi-k2.6 | Built-in LiteLLM path (planned) |
+| `pi` | anthropic | claude-sonnet-4 | Pi headless agent |
+| `codex-headless` | openai | gpt-5 | Codex CLI |
+
+Set it via environment:
+
+```bash
+export SARINGAN_JUDGE_CONFIG=/home/ungku/programming/rangkai/docs/quality-gate/judge-harness-config.toml
+export SARINGAN_JUDGE_HARNESS=legacy-litellm
+export SARINGAN_JUDGE_PROVIDER=openai
+export SARINGAN_JUDGE_MODEL=openai/kimi-k2.6
+```
+
+Or pass it on the CLI to the wrapper (requires updating the wrapper to forward
+`--judge-config`).
+
+### How harness selection works
+
+1. `--harness <name>` CLI flag → named harness from config
+2. `SARINGAN_JUDGE_HARNESS` env var → named harness from config
+3. `default_harness` from the config TOML
+4. If no config at all → built-in LiteLLM path (backward compatible)
+
+Provider and model can be overridden at runtime via `--provider` / `--model`
+CLI flags or `SARINGAN_JUDGE_PROVIDER` / `SARINGAN_JUDGE_MODEL` env vars.
+These overrides take precedence over the harness definition.
+
+> **Note:** The `legacy-litellm` harness requires the
+> `saringan.legacy_adapter_runner` entry point which is planned but not yet
+> implemented. Until then, omit `--judge-config` to fall back to the
+> built-in LLM path, or set `SARINGAN_SKIP_JUDGE=1` to skip the judge.
+
+## Required environment (legacy path)
 
 Before starting Rangkai, export the Saringan executable and judge model:
 
